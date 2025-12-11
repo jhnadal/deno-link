@@ -5,6 +5,7 @@
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
-    "@std/http": "jsr:@std/http@^1.0.22"
+    "@std/http": "jsr:@std/http@^1.0.22",
+    "@std/http/unstable-route": "jsr:@std/http/unstable-route"
   }
 }

@@ -1,4 +1,4 @@
-import { type Route, route, Handler } from "jsr:@std/http/unstable-route";
+import { type Route, route, Handler } from "@std/http/unstable-route";
 
 export class Router {
   #routes: Route[] = [];

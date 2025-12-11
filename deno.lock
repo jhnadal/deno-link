@@ -110,6 +110,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@1",
+      "jsr:@std/http@*",
       "jsr:@std/http@^1.0.22"
     ]
   }
