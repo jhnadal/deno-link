@@ -1,8 +1,15 @@
 /** @jsxImportSource https://esm.sh/preact */
 
-import type { ComponentChildren } from "npm:preact";
+import type { ComponentChildren } from "preact";
+import type { GitHubUser, ShortLink } from "./db.ts";
 
-export function Layout({ children }) {
+interface PageProps {
+  user?: GitHubUser;
+  shortLink?: ShortLink | null;
+  shortLinkList?: (ShortLink | null)[];
+}
+
+export function Layout({ children }: { children: ComponentChildren }) {
   return (
     <html data-theme="dark" lang="en">
       <head>
@@ -15,9 +22,7 @@ export function Layout({ children }) {
 
         <link
           href="https://cdn.jsdelivr.net/npm/daisyui@5"
-          rel="preload"
-          as="style"
-          onLoad="this.onload=null;this.rel='stylesheet'"
+          rel="stylesheet"
           type="text/css"
         />
 
@@ -98,7 +103,7 @@ export function Layout({ children }) {
   );
 }
 
-export function HomePage({ user }) {
+export function HomePage({ user }: PageProps) {
   return (
     <Layout>
       <div className="hero min-h-[500px] bg-base-200 rounded-box">

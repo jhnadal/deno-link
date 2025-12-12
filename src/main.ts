@@ -1,9 +1,20 @@
 import { Router } from "./router.ts";
 import { generateShortCode, storeShortLink, getShortLink } from "./db.ts";
 import { HomePage } from "./ui.tsx";
-import { render } from "npm:preact-render-to-string";
+import { render } from "preact-render-to-string";
+import { createGitHubOAuthConfig, createHelpers } from "@deno/kv-oauth";
+import { handleGithubCallback } from "./auth.ts";
 
 const app = new Router();
+
+const oauthConfig = createGitHubOAuthConfig({
+  redirectUri: Deno.env.get("REDIRECT_URI"),
+});
+const { signIn, signOut } = createHelpers(oauthConfig);
+
+app.get("/oauth/signin", (req: Request) => signIn(req));
+app.get("/oauth/signout", signOut);
+app.get("/oauth/callback", handleGithubCallback);
 
 app.post("/health-check", () => new Response("It's ALIVE!"));
 
@@ -27,7 +38,7 @@ app.post("/links", async (req) => {
   });
 });
 
-app.get("/links/:id", async (_req, _info, params) => {
+app.get("/links/:id", async (_req, _info) => {
   const shortCode = _info?.pathname.groups.id;
 
   const data = await getShortLink(shortCode!);
@@ -41,11 +52,8 @@ app.get("/links/:id", async (_req, _info, params) => {
 });
 
 app.get("/", () => {
-  const htmlContent = render(HomePage({ user: null }));
-
-  const fullHtmlResponseString = `<!DOCTYPE html>${htmlContent}`;
-
-  return new Response(fullHtmlResponseString, {
+  const user = app.currentUser ?? undefined;
+  return new Response(render(HomePage({ user })), {
     status: 200,
     headers: {
       "content-type": "text/html",

@@ -1,7 +1,11 @@
 import { type Route, route, Handler } from "@std/http/unstable-route";
+import type { GitHubUser } from "./db.ts";
+import { getCurrentUser } from "./auth.ts";
 
 export class Router {
   #routes: Route[] = [];
+
+  currentUser?: GitHubUser | null; // <-- HERE
 
   get(path: string, handler: Handler) {
     this.#addRoute("GET", path, handler);
@@ -26,6 +30,7 @@ export class Router {
       method,
       handler: async (req, info, params) => {
         try {
+          this.currentUser = await getCurrentUser(req);
           return await handler(req, info!, params!);
         } catch (error) {
           console.error("Error handling request:", error);

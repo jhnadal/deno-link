@@ -59,15 +59,28 @@ export async function getShortLink(shortCode: string) {
   return link.value;
 }
 
-// Temporary example to try it out
-// deno run -A --unstable-kv src/db.ts
 const longUrl = "https://fireship.io";
 const shortCode = await generateShortCode(longUrl);
 const userId = "test";
 
-console.log(shortCode);
-
 await storeShortLink(longUrl, shortCode, userId);
 
 const linkData = await getShortLink(shortCode);
-console.log(linkData);
+
+export type GitHubUser = {
+  login: string; // username
+  avatar_url: string;
+  html_url: string;
+};
+
+export async function storeUser(sessionId: string, userData: GitHubUser) {
+  const key = ["sessions", sessionId];
+  const res = await kv.set(key, userData);
+  return res;
+}
+
+export async function getUser(sessionId: string) {
+  const key = ["sessions", sessionId];
+  const res = await kv.get<GitHubUser>(key);
+  return res.value;
+}
