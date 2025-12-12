@@ -17,7 +17,8 @@
     "jsr:@std/media-types@^1.1.0": "1.1.0",
     "jsr:@std/net@^1.0.6": "1.0.6",
     "jsr:@std/path@^1.1.3": "1.1.3",
-    "jsr:@std/streams@^1.0.14": "1.0.14"
+    "jsr:@std/streams@^1.0.14": "1.0.14",
+    "npm:preact-render-to-string@*": "6.6.3_preact@10.28.0"
   },
   "jsr": {
     "@std/assert@1.0.16": {
@@ -80,6 +81,20 @@
       "integrity": "c0df6cdd73bd4bbcbe4baa89e323b88418c90ceb2d926f95aa99bdcdbfca2411"
     }
   },
+  "npm": {
+    "preact-render-to-string@6.6.3_preact@10.28.0": {
+      "integrity": "sha512-7oHG7jzjriqsFPkSPiPnzrQ0GcxFm6wOkYWNdStK5Ks9YlWSQQXKGBRAX4nKDdqX7HAQuRvI4pZNZMycK4WwDw==",
+      "dependencies": [
+        "preact"
+      ]
+    },
+    "preact@10.28.0": {
+      "integrity": "sha512-rytDAoiXr3+t6OIP3WGlDd0ouCUG1iCWzkcY3++Nreuoi17y6T5i/zRhe6uYfoVcxq6YU+sBtJouuRDsq8vvqA=="
+    }
+  },
+  "redirects": {
+    "https://esm.sh/preact/jsx-runtime": "https://esm.sh/preact@10.28.0/jsx-runtime"
+  },
   "remote": {
     "https://deno.land/std@0.200.0/_util/os.ts": "d932f56d41e4f6a6093d56044e29ce637f8dcc43c5a90af43504a889cf1775e3",
     "https://deno.land/std@0.200.0/assert/assert.ts": "9a97dad6d98c238938e7540736b826440ad8c1c1e54430ca4c4e623e585607ee",
@@ -115,7 +130,10 @@
     "https://deno.land/std@0.200.0/path/resolve.ts": "103b62207726a27f28177f397008545804ecb20aaf00623af1f622b18cd80b9f",
     "https://deno.land/std@0.200.0/path/separator.ts": "0fb679739d0d1d7bf45b68dacfb4ec7563597a902edbaf3c59b50d5bcadd93b1",
     "https://deno.land/std@0.200.0/streams/byte_slice_stream.ts": "c46d7c74836fc8c1a9acd9fe211cbe1bbaaee1b36087c834fb03af4991135c3a",
-    "https://deno.land/std@0.200.0/version.ts": "ae3fc7003d763c0d78f76fad04df179529d0aef813a247b4a3909e22adf6bfd1"
+    "https://deno.land/std@0.200.0/version.ts": "ae3fc7003d763c0d78f76fad04df179529d0aef813a247b4a3909e22adf6bfd1",
+    "https://esm.sh/preact@10.28.0/denonext/jsx-runtime.mjs": "74140474e3fdbfbfba4b08f60441ff6c1cdf41065145e4997d3d68ac7da98663",
+    "https://esm.sh/preact@10.28.0/denonext/preact.mjs": "db19baec1ac3a23c9c2cfbfbd2b83944c4c724c14707b801e9c673e68ba9226c",
+    "https://esm.sh/preact@10.28.0/jsx-runtime": "21c4ce75deb22e76e07b3fec73cf675ade557ee9d736bfd2d84df261747da5d4"
   },
   "workspace": {
     "dependencies": [
@@ -124,7 +142,8 @@
       "jsr:@std/crypto@^1.0.5",
       "jsr:@std/encoding@^1.0.10",
       "jsr:@std/http@*",
-      "jsr:@std/http@^1.0.22"
+      "jsr:@std/http@^1.0.22",
+      "npm:preact@*"
     ]
   }
 }

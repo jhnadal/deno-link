@@ -10,5 +10,9 @@
     "@std/encoding": "jsr:@std/encoding@^1.0.10",
     "@std/http": "jsr:@std/http@^1.0.22",
     "@std/http/unstable-route": "jsr:@std/http/unstable-route"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "npm:preact"
   }
 }

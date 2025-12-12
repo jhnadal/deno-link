@@ -1,9 +1,9 @@
 import { Router } from "./router.ts";
 import { generateShortCode, storeShortLink, getShortLink } from "./db.ts";
+import { HomePage } from "./ui.tsx";
+import { render } from "npm:preact-render-to-string";
 
 const app = new Router();
-
-app.get("/", () => new Response("Hi Mom!"));
 
 app.post("/health-check", () => new Response("It's ALIVE!"));
 
@@ -36,6 +36,19 @@ app.get("/links/:id", async (_req, _info, params) => {
     status: 201,
     headers: {
       "content-type": "application/json",
+    },
+  });
+});
+
+app.get("/", () => {
+  const htmlContent = render(HomePage({ user: null }));
+
+  const fullHtmlResponseString = `<!DOCTYPE html>${htmlContent}`;
+
+  return new Response(fullHtmlResponseString, {
+    status: 200,
+    headers: {
+      "content-type": "text/html",
     },
   });
 });
