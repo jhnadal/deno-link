@@ -37,6 +37,7 @@ export async function storeShortLink(
   userId: string
 ) {
   const shortLinkKey = ["shortlinks", shortCode];
+
   const data: ShortLink = {
     shortCode,
     longUrl,
@@ -45,7 +46,13 @@ export async function storeShortLink(
     clickCount: 0,
   };
 
-  const res = await kv.set(shortLinkKey, data);
+  const userKey = [userId, shortCode];
+
+  const res = await kv
+    .atomic()
+    .set(shortLinkKey, data)
+    .set(userKey, shortCode)
+    .commit();
 
   if (!res.ok) {
     // handle errors
@@ -74,6 +81,15 @@ export async function getUserLinks(userId: string) {
   const userShortLinks = await Array.fromAsync(userRes);
 
   return userShortLinks.map((v) => v.value);
+}
+
+export async function getAllLinks() {
+  const listIterator = kv.list<ShortLink>({ prefix: ["shortlinks"] });
+  const allLinks: ShortLink[] = [];
+  for await (const entry of listIterator) {
+    allLinks.push(entry.value);
+  }
+  return allLinks;
 }
 
 export type GitHubUser = {

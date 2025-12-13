@@ -4,6 +4,7 @@ import {
   storeShortLink,
   getShortLink,
   getUserLinks,
+  getAllLinks,
 } from "./db.ts";
 import {
   HomePage,
@@ -37,22 +38,13 @@ app.get("/oauth/callback", handleGithubCallback);
 
 app.post("/health-check", () => new Response("It's ALIVE!"));
 
-app.post("/links", async (req) => {
-  const { longUrl } = await req.json();
+app.get("/secret/all-links", async () => {
+  const data = await getAllLinks();
 
-  const shortCode = await generateShortCode(longUrl);
-  await storeShortLink(longUrl, shortCode, "testUser");
-
-  const responseData = {
-    message: "success!",
-    longUrl: longUrl,
-    shortCode: shortCode,
-  };
-
-  return new Response(JSON.stringify(responseData), {
+  return new Response(JSON.stringify(data), {
     status: 201,
     headers: {
-      "Content-Type": "application/json",
+      "content-type": "application/json",
     },
   });
 });
@@ -81,10 +73,44 @@ app.get("/links/:id", async (_req, _info) => {
   });
 });
 
+app.post("/links", async (req) => {
+  if (!app.currentUser) return unauthorizedResponse();
+
+  // Parse form data
+  const formData = await req.formData();
+  const longUrl = formData.get("longUrl") as string;
+
+  if (!longUrl) {
+    return new Response("Missing longUrl", { status: 400 });
+  }
+
+  const shortCode = await generateShortCode(longUrl);
+
+  await storeShortLink(longUrl, shortCode, app.currentUser.login);
+
+  // Redirect to the links list page after successful creation
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: "/links",
+    },
+  });
+});
+
+app.get("/links", async () => {
+  if (!app.currentUser) return unauthorizedResponse();
+
+  const shortLinks = await getUserLinks(app.currentUser.login);
+
+  return new Response(render(LinksPage({ shortLinkList: shortLinks })), {
+    status: 200,
+    headers: {
+      "content-type": "text/html",
+    },
+  });
+});
+
 app.get("/", () => {
-  console.log("batata");
-  console.log("current user:", app.currentUser);
-  console.log(!app.currentUser);
   const user = app.currentUser ?? undefined;
   return new Response(render(HomePage({ user })), {
     status: 200,
@@ -113,19 +139,6 @@ app.post("/links", async (req) => {
     status: 303,
     headers: {
       Location: "/links",
-    },
-  });
-});
-
-app.get("/links", async () => {
-  if (!app.currentUser) return unauthorizedResponse();
-
-  const shortLinks = await getUserLinks(app.currentUser.login);
-
-  return new Response(render(LinksPage({ shortLinkList: shortLinks })), {
-    status: 200,
-    headers: {
-      "content-type": "text/html",
     },
   });
 });

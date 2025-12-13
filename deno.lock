@@ -218,7 +218,6 @@
       "jsr:@std/http@*",
       "jsr:@std/http@^1.0.22",
       "npm:preact-render-to-string@^6.6.4",
-      "npm:preact@*",
       "npm:preact@^10.28.0"
     ]
   }
