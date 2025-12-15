@@ -9,6 +9,11 @@ interface PageProps {
   shortLinkList?: (ShortLink | null)[];
 }
 
+const BASE_URL =
+  Deno.env.get("DENO_ENV") === "dev"
+    ? "http://localhost:8000"
+    : "http://localhost:8000";
+
 export function Layout({ children }: { children: ComponentChildren }) {
   return (
     <html data-theme="dark" lang="en">
@@ -180,6 +185,103 @@ export function CreateShortlinkPage() {
   );
 }
 
+export function ShortlinkViewPage({ shortLink }: PageProps) {
+  return (
+    <Layout>
+      <div className="space-y-8">
+        <div className="stats shadow">
+          <div className="stat">
+            <div className="stat-title">Total Clicks</div>
+            <div className="stat-value" id="clickCount">
+              {shortLink?.clickCount}
+            </div>
+            <div className="stat-desc">Updated in realtime</div>
+          </div>
+        </div>
+
+        <div className="card bg-base-100 shadow-xl">
+          <div className="card-body">
+            <h2 className="card-title">Shortlink Details</h2>
+            <div className="divider"></div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="label">
+                  <span className="label-text font-semibold">Short URL:</span>
+                </label>
+                <a
+                  href={`/${shortLink?.shortCode}`}
+                  target="_blank"
+                  className="link link-primary"
+                >
+                  {`${BASE_URL}/${shortLink?.shortCode}`}
+                </a>
+              </div>
+
+              <div>
+                <label className="label">
+                  <span className="label-text font-semibold">Long URL:</span>
+                </label>
+                <a
+                  href={shortLink?.longUrl}
+                  className="link link-primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {shortLink?.longUrl}
+                </a>
+              </div>
+
+              <div>
+                <label className="label">
+                  <span className="label-text font-semibold">Created At: </span>
+                </label>
+                <span>
+                  {shortLink
+                    ? new Date(shortLink.createdAt).toLocaleString()
+                    : ""}
+                </span>
+              </div>
+            </div>
+
+            <div className="card-actions justify-end mt-6">
+              <a
+                target="_blank"
+                href={`/realtime/${shortLink?.shortCode}`}
+                className="btn btn-primary"
+              >
+                View Realtime Analytics
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="/static/realtime.js"></script>
+    </Layout>
+  );
+}
+
+export function NotFoundPage({ shortCode }: { shortCode: string }) {
+  return (
+    <Layout>
+      <div className="hero min-h-[400px]">
+        <div className="hero-content text-center">
+          <div className="max-w-md">
+            <h1 className="text-5xl font-bold">404</h1>
+            <p className="py-6">
+              Sorry, the shortlink "{shortCode}" doesn't exist.
+            </p>
+            <a href="/" className="btn btn-primary">
+              Go to Homepage
+            </a>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+}
+
 export function UnauthorizedPage() {
   return (
     <Layout>
@@ -236,26 +338,6 @@ export function UnauthorizedPage() {
         <div className="toast toast-end">
           <div className="alert alert-error">
             <span>You must be logged in to access this page.</span>
-          </div>
-        </div>
-      </div>
-    </Layout>
-  );
-}
-
-export function NotFoundPage({ shortCode }: { shortCode: string }) {
-  return (
-    <Layout>
-      <div className="hero min-h-[400px]">
-        <div className="hero-content text-center">
-          <div className="max-w-md">
-            <h1 className="text-5xl font-bold">404</h1>
-            <p className="py-6">
-              Sorry, the shortlink "{shortCode}" doesn't exist.
-            </p>
-            <a href="/" className="btn btn-primary">
-              Go to Homepage
-            </a>
           </div>
         </div>
       </div>
