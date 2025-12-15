@@ -1,7 +1,8 @@
 {
   "tasks": {
     "dev": "deno serve --watch -A --unstable-kv --env src/main.ts",
-    "test": "deno test tests/"
+    "test": "deno test tests/",
+    "deploy": "deno deploy --project=nadal-link-shortener --unstable-kv src/main.ts"
   },
   "imports": {
     "@deno/kv-oauth": "jsr:@deno/kv-oauth@^0.11.0",
