@@ -12,7 +12,7 @@ interface PageProps {
 const BASE_URL =
   Deno.env.get("DENO_ENV") === "dev"
     ? "http://localhost:8000"
-    : "http://localhost:8000";
+    : "https://nadal-link-shortener.jhnadal.deno.net/";
 
 export function Layout({ children }: { children: ComponentChildren }) {
   return (
@@ -44,7 +44,7 @@ export function Layout({ children }: { children: ComponentChildren }) {
 
         <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
 
-        <title>Nadal's URL Shortener</title>
+        <title> Nadal's URL Shortener</title>
 
         <script src="/static/clarity.js"></script>
       </head>
@@ -102,12 +102,12 @@ export function Layout({ children }: { children: ComponentChildren }) {
           </div>
         </header>
 
-        <main className="flex-grow container mx-auto px-4 py-8">
+        <main className="flex-grow container mx-auto px-4 py-8" role="main">
           {children}
         </main>
 
         <footer className="footer footer-center p-4 bg-base-200 text-base-content">
-          <aside>
+          <aside role="contentinfo">
             <p>
               Made with love by Joao Nadal @2025 for learning purposes. |
               Original code Copyright © 2024 - All rights reserved by
@@ -341,7 +341,7 @@ export function UnauthorizedPage() {
 
               <div className="divider">or</div>
 
-              <a href="/" className="btn btn-outline btn-neutral w-full">
+              <a href="/" className="btn btn-outline w-full">
                 Return to Homepage
               </a>
             </div>
