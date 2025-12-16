@@ -105,7 +105,11 @@ app.get("/links", async () => {
 
 app.get("/", () => {
   const user = app.currentUser ?? undefined;
-  return new Response(render(HomePage({ user })), {
+
+  const htmlContent = render(HomePage({ user }));
+  const fullHtml = `<!DOCTYPE html>${htmlContent}`;
+
+  return new Response(fullHtml, {
     status: 200,
     headers: {
       "content-type": "text/html",
@@ -242,8 +246,9 @@ app.get("/:id", async (req, _info) => {
 // Static Assets
 app.get("/static/*", (req) => serveDir(req));
 
-export default {
-  fetch(req) {
-    return app.handler(req);
-  },
-} satisfies Deno.ServeDefaultExport;
+Deno.serve(app.handler);
+// export default {
+//   fetch(req) {
+//     return app.handler(req);
+//   },
+// } satisfies Deno.ServeDefaultExport;

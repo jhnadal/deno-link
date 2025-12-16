@@ -2,7 +2,7 @@
   "org": "jhnadal",
   "app": "nadal-link-shortener",
   "tasks": {
-    "dev": "deno serve --watch -A --unstable-kv --env src/main.ts",
+    "dev": "deno run --watch -A --unstable-kv --env src/main.ts --tunnel",
     "test": "deno test tests/",
     "deploy": "deno deploy . --prod"
   },

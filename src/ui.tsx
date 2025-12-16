@@ -26,15 +26,27 @@ export function Layout({ children }: { children: ComponentChildren }) {
         ></meta>
 
         <link
+          rel="preconnect"
+          href="https://cdn.jsdelivr.net"
+          crossOrigin="anonymous"
+        />
+
+        <link
           href="https://cdn.jsdelivr.net/npm/daisyui@5"
           rel="stylesheet"
           type="text/css"
         />
 
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <script
+          src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"
+          defer
+        ></script>
 
-        <link rel="icon" type="image/png" href="/static/logo.png" />
+        <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+
         <title>Nadal's URL Shortener</title>
+
+        <script src="/static/clarity.js"></script>
       </head>
       <div className="min-h-screen flex flex-col bg-base-100">
         <header className="navbar bg-primary text-primary-content shadow-lg">
@@ -114,8 +126,11 @@ export function HomePage({ user }: PageProps) {
       <div className="hero min-h-[500px] bg-base-200 rounded-box">
         <div className="hero-content text-center">
           <div className="max-w-lg">
+            <figure className="flex justify-center mb-6">
+              <img src="/static/logo.png" alt="Deno" className="h-[100px] " />
+            </figure>
             <h1 className="text-5xl font-bold">
-              Welcome to a simple link shortener
+              Welcome to my simple link shortener
             </h1>
             <p className="py-6">
               This is a Deno-powered URL shortening service. Conceived to learn
@@ -124,7 +139,9 @@ export function HomePage({ user }: PageProps) {
             </p>
             {user ? (
               <div className="space-y-4">
-                <div className="text-lg">Welcome back, {user.login}!</div>
+                <div className="text-lg">
+                  Welcome back, <strong>{user.login}</strong>!
+                </div>
                 <div className="space-x-4">
                   <a href="/links/new" className="btn btn-primary">
                     Create New Link
